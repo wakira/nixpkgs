@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "aenum";
-  version = "2.2.1";
+  version = "2.2.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "b12a7be3d89b270f266f8643aaa126404e5cdc0929bd6f09548b8eaed85e2aa1";
+    sha256 = "c94fde69eebf8d478d68f0d96c61178299d9a19465ef5effa326ebee7536c203";
   };
 
   # For Python 3, locale has to be set to en_US.UTF-8 for
