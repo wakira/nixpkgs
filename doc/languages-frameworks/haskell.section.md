@@ -3,7 +3,7 @@ title: User's Guide for Haskell in Nixpkgs
 author: Peter Simons
 date: 2015-06-01
 ---
-# User's Guide to the Haskell Infrastructure
+# Haskell
 
 
 ## How to install Haskell packages
@@ -398,7 +398,9 @@ nix:
 For more on how to write a `shell.nix` file see the below section. You'll need
 to express a derivation. Note that Nixpkgs ships with a convenience wrapper
 function around `mkDerivation` called `haskell.lib.buildStackProject` to help you
-create this derivation in exactly the way Stack expects. All of the same inputs
+create this derivation in exactly the way Stack expects. However for this to work
+you need to disable the sandbox, which you can do by using `--option sandbox relaxed`
+or `--option sandbox false` to the Nix command. All of the same inputs
 as `mkDerivation` can be provided. For example, to build a Stack project that
 including packages that link against a version of the R library compiled with
 special options turned on:
@@ -953,7 +955,7 @@ is essentially a "free software" license (BSD3), according to
 paragraph 2 of the LGPL, GHC must be distributed under the terms of the LGPL!
 
 To work around these problems GHC can be build with a slower but LGPL-free
-alternative implemention for Integer called
+alternative implementation for Integer called
 [integer-simple](http://hackage.haskell.org/package/integer-simple).
 
 To get a GHC compiler build with `integer-simple` instead of `integer-gmp` use

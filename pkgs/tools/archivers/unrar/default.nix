@@ -1,12 +1,12 @@
 {stdenv, fetchurl}:
 
 stdenv.mkDerivation rec {
-  name = "unrar-${version}";
-  version = "5.7.4";
+  pname = "unrar";
+  version = "5.8.3";
 
   src = fetchurl {
     url = "https://www.rarlab.com/rar/unrarsrc-${version}.tar.gz";
-    sha256 = "1d77wwgapwjxxshhinhk51skdd6v6xdsx34jjcjg6cj6zlwd0baq";
+    sha256 = "19lizlsbblkcdyc81jycp5k8kf5d8h2hlgfy16zb1g2vixf6i49m";
   };
 
   postPatch = ''

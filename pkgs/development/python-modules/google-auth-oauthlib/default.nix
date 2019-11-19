@@ -12,11 +12,11 @@
 
 buildPythonPackage rec {
   pname = "google-auth-oauthlib";
-  version = "0.2.0";
+  version = "0.4.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "226d1d0960f86ba5d9efd426a70b291eaba96f47d071657e0254ea969025728a";
+    sha256 = "88d2cd115e3391eb85e1243ac6902e76e77c5fe438b7276b297fbe68015458dd";
   };
 
   checkInputs = [
@@ -28,6 +28,7 @@ buildPythonPackage rec {
   ];
 
   checkPhase = ''
+    rm -fr tests/__pycache__/
     py.test
   '';
 

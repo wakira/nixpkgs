@@ -41,19 +41,16 @@ in
     };
 
     users.users = mkIf (cfg.user == "jellyfin") {
-      jellyfin.group = cfg.group;
+      jellyfin = {
+        group = cfg.group;
+        isSystemUser = true;
+      };
     };
 
     users.groups = mkIf (cfg.group == "jellyfin") {
       jellyfin = {};
     };
 
-    assertions = [
-      {
-        assertion = !config.services.emby.enable;
-        message = "Emby and Jellyfin are incompatible, you cannot enable both";
-      }
-    ];
   };
 
   meta.maintainers = with lib.maintainers; [ minijackson ];

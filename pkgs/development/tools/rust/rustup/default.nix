@@ -1,25 +1,25 @@
 { stdenv, lib, runCommand, patchelf
 , fetchFromGitHub, rustPlatform
-, pkgconfig, curl, Security }:
+, pkgconfig, curl, Security, CoreServices }:
 
 rustPlatform.buildRustPackage rec {
   pname = "rustup";
-  version = "1.18.1";
+  version = "1.20.2";
 
   src = fetchFromGitHub {
     owner = "rust-lang";
     repo = "rustup.rs";
     rev = version;
-    sha256 = "0932n708ikxzjv7y78zcrnnnps3rgimsnpaximhm9vmjjnkdgm7x";
+    sha256 = "0vfrfjfg5x1g44w03rdci2ky7s3s7rljdcmmp5h6pdvhzrd234aj";
   };
 
-  cargoSha256 = "0kw8a9prqjf939g0h8ryyhlm1n84fwdycvl0nkykkwlfqd6hh9hb";
+  cargoSha256 = "1lsv1d99dn6mngaqhd3lw90cr3zg4gq08wi0adxkkhaikc9jjdwh";
 
   nativeBuildInputs = [ pkgconfig ];
 
   buildInputs = [
     curl
-  ] ++ stdenv.lib.optionals stdenv.isDarwin [ Security ];
+  ] ++ stdenv.lib.optionals stdenv.isDarwin [ CoreServices Security ];
 
   cargoBuildFlags = [ "--features no-self-update" ];
 
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
     '')
   ];
 
-  doCheck = !stdenv.isAarch64;
+  doCheck = !stdenv.isAarch64 && !stdenv.isDarwin;
 
   postInstall = ''
     pushd $out/bin
@@ -66,5 +66,6 @@ rustPlatform.buildRustPackage rec {
     homepage = https://www.rustup.rs/;
     license = with licenses; [ asl20 /* or */ mit ];
     maintainers = [ maintainers.mic92 ];
+    platforms = platforms.all;
   };
 }
