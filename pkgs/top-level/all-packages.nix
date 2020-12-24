@@ -5741,6 +5741,8 @@ in
 
   mgba = libsForQt5.callPackage ../misc/emulators/mgba { };
 
+  microdnf = callPackage ../tools/package-management/microdnf { };
+
   microserver = callPackage ../servers/microserver { };
 
   midisheetmusic = callPackage ../applications/audio/midisheetmusic { };
@@ -8690,8 +8692,8 @@ in
   any-nix-shell = callPackage ../shells/any-nix-shell { };
 
   bash = lowPrio (callPackage ../shells/bash/4.4.nix { });
-  bash_5 = lowPrio (callPackage ../shells/bash/5.0.nix { });
-  bashInteractive_5 = lowPrio (callPackage ../shells/bash/5.0.nix {
+  bash_5 = lowPrio (callPackage ../shells/bash/5.1.nix { });
+  bashInteractive_5 = lowPrio (callPackage ../shells/bash/5.1.nix {
     interactive = true;
     withDocs = true;
   });
@@ -10065,11 +10067,9 @@ in
   # So this commit doesn't remove the 1.45.2 release.
   rust_1_45 = callPackage ../development/compilers/rust/1_45.nix {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
-    llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_10;
   };
   rust_1_48 = callPackage ../development/compilers/rust/1_48.nix {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
-    llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_11;
   };
   rust = rust_1_48;
 
@@ -13977,6 +13977,8 @@ in
 
   libdnet = callPackage ../development/libraries/libdnet { };
 
+  libdnf = callPackage ../tools/package-management/libdnf { };
+
   libdrm = callPackage ../development/libraries/libdrm { };
 
   libdv = callPackage ../development/libraries/libdv { };
@@ -15591,7 +15593,7 @@ in
       kwin kwrited milou oxygen plasma-browser-integration plasma-desktop
       plasma-integration plasma-nm plasma-pa plasma-thunderbolt plasma-vault plasma-workspace
       plasma-workspace-wallpapers polkit-kde-agent powerdevil sddm-kcm
-      systemsettings user-manager xdg-desktop-portal-kde
+      systemsettings xdg-desktop-portal-kde
     ;
 
     inherit ((plasma5.override { libsForQt5 = self; }).thirdParty)
@@ -16827,17 +16829,13 @@ in
 
   perlcritic = perlPackages.PerlCritic;
 
-  sqitchMysql = callPackage ../development/tools/misc/sqitch {
-    name = "sqitch-mysql";
-    databaseModule = perlPackages.DBDmysql;
-    sqitchModule = perlPackages.AppSqitch;
-  };
+  sqitchMysql = (callPackage ../development/tools/misc/sqitch {
+    mysqlSupport = true;
+  }).overrideAttrs (oldAttrs: { pname = "sqitch-mysql"; });
 
-  sqitchPg = callPackage ../development/tools/misc/sqitch {
-    name = "sqitch-pg";
-    databaseModule = perlPackages.DBDPg;
-    sqitchModule = perlPackages.AppSqitch;
-  };
+  sqitchPg = (callPackage ../development/tools/misc/sqitch {
+    postgresqlSupport = true;
+  }).overrideAttrs (oldAttrs: { pname = "sqitch-pg"; });
 
   ### DEVELOPMENT / R MODULES
 
@@ -26501,10 +26499,8 @@ in
   lumina = recurseIntoAttrs (callPackage ../desktops/lumina { });
 
   lxqt = recurseIntoAttrs (import ../desktops/lxqt {
-    # TODO: Update these to qt515 at some point. When doing it, please remove
-    # the choice of libsForQt5*.sddm in sddm's module.
-    qt5 = qt514;
-    libsForQt5 = libsForQt514;
+    inherit qt5;
+    inherit libsForQt5;
     inherit pkgs;
     inherit (lib) makeScope;
   });
