@@ -2,7 +2,7 @@
 , fetchFromGitHub
 , fetchpatch
 , cmake
-, pkgconfig
+, pkg-config
 , boost17x
 , openssl
 , zlib
@@ -14,13 +14,13 @@
 
 stdenv.mkDerivation rec {
   pname = "mtxclient";
-  version = "0.3.1";
+  version = "0.4.0";
 
   src = fetchFromGitHub {
     owner = "Nheko-Reborn";
     repo = "mtxclient";
     rev = "v${version}";
-    sha256 = "1dg4dq20g0ah62j5s3gpsxqq4ny7lxkxdxa9q6g54hdwkrb9ms7x";
+    sha256 = "1x820rcfz5r203dc8a0rzavcjjx10fsv1dicqg65m6kxx1w95j5r";
   };
 
   cmakeFlags = [
@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     cmake
-    pkgconfig
+    pkg-config
   ];
   buildInputs = [
     spdlog
