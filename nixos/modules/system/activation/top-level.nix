@@ -173,6 +173,7 @@ in
           };
 
           options.configuration = mkOption {
+            type = types.attrsOf types.anything;
             default = {};
             description = "Arbitrary NixOS configuration options.";
           };
@@ -190,7 +191,7 @@ in
 
     system.boot.loader.kernelFile = mkOption {
       internal = true;
-      default = pkgs.stdenv.hostPlatform.platform.kernelTarget;
+      default = pkgs.stdenv.hostPlatform.linux-kernel.target;
       type = types.str;
       description = ''
         Name of the kernel file to be passed to the bootloader.

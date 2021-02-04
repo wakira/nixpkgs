@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , buildPythonPackage
 , fetchFromGitHub
 , zlib
@@ -17,10 +17,10 @@
 , matplotlib
 , nose
 , pycrypto
-, pyqtgraph ? null }:
+, pyqtgraph
+, visualizationSupport ? false }:
 
 let
-  visualizationSupport = (pyqtgraph != null) && (matplotlib != null);
   version = "2.2.0";
 in
 buildPythonPackage {
@@ -35,7 +35,7 @@ buildPythonPackage {
   };
 
   propagatedBuildInputs = [ zlib xz ncompress gzip bzip2 gnutar p7zip cabextract cramfsswap cramfsprogs sasquatch squashfsTools lzma pycrypto ]
-  ++ stdenv.lib.optionals visualizationSupport [ matplotlib pyqtgraph ];
+  ++ lib.optionals visualizationSupport [ matplotlib pyqtgraph ];
 
   # setup.py only installs version.py during install, not test
   postPatch = ''
